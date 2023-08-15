@@ -1,0 +1,8 @@
+# convert exported open-street map into sumo network
+netconvert --osm-files orlando.osm --output-file orlando.net.xml --geometry.remove --roundabouts.guess --ramps.guess --junctions.join --tls.guess-signals  --tls.discard-simple --tls.join
+
+# create trips
+python3 $SUMO_HOME/tools/randomTrips.py -n orlando.net.xml -e 1000 -o orlando.trips.xml
+
+# create routes for trips
+duarouter --ignore-errors -n orlando.net.xml --route-files orlando.trips.xml -o orlando.rou.xml
